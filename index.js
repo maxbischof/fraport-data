@@ -1,15 +1,23 @@
 const firestore = require('./lib/firestore')
 const fraport = require('./lib/fraport')
+const cron = require('node-cron')
 
-;(async () => {
-  const arrivals = await fraport.getArrivals()
-
+cron.schedule('* * * * *', async () => {
+  const arrivals = await fraport.getFlights('arrival')
   arrivals.forEach((arrival) => {
-    console.log(arrivals)
     firestore.writeDocument({
-      collection: 'arrival',
+      collection: 'arrivals',
       identifier: arrival.flight.id,
       document: arrival.flight,
     })
   })
-})()
+
+  const departures = await fraport.getFlights('departure')
+  departures.forEach((departure) => {
+    firestore.writeDocument({
+      collection: 'departures',
+      identifier: departure.flight.id,
+      document: departure.flight,
+    })
+  })
+})

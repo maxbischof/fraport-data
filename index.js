@@ -1,15 +1,15 @@
-const firestore = require('./lib/firestore.js')
-const fraport = require('./lib/fraport.js')
+const firestore = require('./lib/firestore')
+const fraport = require('./lib/fraport')
 
-const arrivalObject = {
-  id: 22,
-  start: '20.09.20',
-}
+;(async () => {
+  const arrivals = await fraport.getArrivals()
 
-firestore.writeDocument({
-  collection: 'arrival',
-  identifier: '20',
-  document: arrivalObject,
-})
-
-fraport.getArrivals()
+  arrivals.forEach((arrival) => {
+    console.log(arrivals)
+    firestore.writeDocument({
+      collection: 'arrival',
+      identifier: arrival.flight.id,
+      document: arrival.flight,
+    })
+  })
+})()

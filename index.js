@@ -2,7 +2,7 @@ const firestore = require('./lib/firestore')
 const fraport = require('./lib/fraport')
 const cron = require('node-cron')
 
-cron.schedule('* * * * *', async () => {
+cron.schedule('*/15 * * * *', async () => {
   const arrivals = await fraport.getFlights('arrival')
   arrivals.forEach((arrival) => {
     firestore.writeDocument({

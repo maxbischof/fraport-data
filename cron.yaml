@@ -1,0 +1,4 @@
+cron:
+- description: "get flights from fraport and write to firebase"
+  url: /cron/getflights
+  schedule: every 15 minutes
